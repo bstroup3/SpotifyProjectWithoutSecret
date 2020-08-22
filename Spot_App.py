@@ -22,9 +22,19 @@ else:
     print("Can't get token for" + user)
 
 
-Playlist = sp.playlist("spotify:playlist:30UZP9Qm7gMpvtgaMbmXcm")
+print("What playlist would you like to view?")
+request = input()
+
+Playlist_id = {}
+
+temp = sp.user_playlists(user)
+for x in temp['items']:
+    name = x['name']
+    id = x['id']
+    Playlist_id[name] = id
+Playlist = sp.playlist(Playlist_id[request])
+print("Playlist Name:")
 print(Playlist["name"])
-print()
 print("Songs:")
 for x in Playlist["tracks"]["items"]:
     Track = x["track"]["name"]
