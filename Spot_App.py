@@ -17,7 +17,22 @@ token = util.prompt_for_user_token(user, scope, client_id=SPOTIPY_CLIENT_ID, cli
 
 if token:
     sp = spotipy.Spotify(auth=token)
-    print (sp.current_user())
 
 else:
     print("Can't get token for" + user)
+
+
+Playlist = sp.playlist("spotify:playlist:30UZP9Qm7gMpvtgaMbmXcm")
+print(Playlist["name"])
+print()
+print("Songs:")
+for x in Playlist["tracks"]["items"]:
+    Track = x["track"]["name"]
+    print(Track)
+
+
+
+
+
+
+
