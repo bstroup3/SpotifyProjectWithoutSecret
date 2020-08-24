@@ -86,7 +86,6 @@ while 1:
     print("2. View followed artists")
     print("3. Make a new playlist")
     print("4. Add songs to a playlist")
-    print("99. Exit program")
     print("Pick a number:")
     Request = input()
 
