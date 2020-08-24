@@ -12,7 +12,7 @@ user = "bds425"
 client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-scope = "user-read-email"
+scope = "playlist-modify-public user-follow-read user-read-email "
 token = util.prompt_for_user_token(user, scope, client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET, redirect_uri=REDIRECT_URI)
 
 if token:
@@ -21,27 +21,49 @@ if token:
 else:
     print("Can't get token for" + user)
 
+def view_owned_playlists():
+    print("What playlist would you like to view?")
+    request = input()
 
-print("What playlist would you like to view?")
-request = input()
+    playlist_id = {}
 
-Playlist_id = {}
+    temp = sp.user_playlists(user)
+    for x in temp['items']:
+        name = x['name']
+        id = x['id']
+        playlist_id[name] = id
+    playlist = sp.playlist(playlist_id[request])
+    print("Playlist Name:")
+    print(playlist["name"])
+    print("Songs:")
+    for x in playlist["tracks"]["items"]:
+        track = x["track"]["name"]
+        print(track)
 
-temp = sp.user_playlists(user)
-for x in temp['items']:
-    name = x['name']
-    id = x['id']
-    Playlist_id[name] = id
-Playlist = sp.playlist(Playlist_id[request])
-print("Playlist Name:")
-print(Playlist["name"])
-print("Songs:")
-for x in Playlist["tracks"]["items"]:
-    Track = x["track"]["name"]
-    print(Track)
+def create_new_playlist(): #FIX ME
+    print("What would you like to name the playlist?")
+    playlist_name = input()
+    sp.user_playlist_create(user, playlist_name, True)
 
+def view_followed_artists(): #FIX ME
+    followed_artists = sp.current_user_followed_artists()
+    for x in followed_artists["artists"]["items"]:
+        artists = x["name"]
+        print(artists)
 
+print("What would you like to do?")
+print("1. View owned playlists")
+print("2. View followed artists")
+print("3. Make a new playlist")
+print("Pick a number:")
+Request = input()
 
+if Request == "1":
+    view_owned_playlists()
+if Request == "2":
+    view_followed_artists()
+if Request == "3":
+    create_new_playlist()
 
 
 
