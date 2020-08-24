@@ -12,7 +12,7 @@ user = "bds425"
 client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-scope = "playlist-modify-public user-follow-read user-read-email"
+scope = "playlist-modify-public user-follow-read user-read-email "
 token = util.prompt_for_user_token(user, scope, client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET, redirect_uri=REDIRECT_URI)
 
 if token:
@@ -47,7 +47,9 @@ def create_new_playlist(): #FIX ME
 
 def view_followed_artists(): #FIX ME
     followed_artists = sp.current_user_followed_artists()
-    print(followed_artists)
+    for x in followed_artists["artists"]["items"]:
+        artists = x["name"]
+        print(artists)
 
 print("What would you like to do?")
 print("1. View owned playlists")
