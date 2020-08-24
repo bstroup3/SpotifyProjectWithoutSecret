@@ -51,19 +51,40 @@ def view_followed_artists():
         artists = x["name"]
         print(artists)
 
-print("What would you like to do?")
-print("1. View owned playlists")
-print("2. View followed artists")
-print("3. Make a new playlist")
-print("Pick a number:")
-Request = input()
+def add_items_to_playlist():
+    print("in works")
 
-if Request == "1":
-    view_owned_playlists()
-if Request == "2":
-    view_followed_artists()
-if Request == "3":
-    create_new_playlist()
+
+Request = 0
+while(Request != "99"):
+    print("What would you like to do?")
+    print("1. View owned playlists")
+    print("2. View followed artists")
+    print("3. Make a new playlist")
+    print("4. Add songs to a playlist")
+    print("Pick a number:")
+    Request = input()
+
+    if Request == "1":
+        view_owned_playlists()
+    if Request == "2":
+        view_followed_artists()
+    if Request == "3":
+        create_new_playlist()
+        print("playlist created")
+        print("Would you like to add songs to this playlist?")
+        answer = input()
+        if answer == "yes":
+            add_items_to_playlist()
+        if answer == "no":
+            break
+    if Request == "4":
+        add_items_to_playlist()
+    if Request == "99":
+        break
+    else:
+        print("That is not an option")
+        print()
 
 
 
