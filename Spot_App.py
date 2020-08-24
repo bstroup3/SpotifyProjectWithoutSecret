@@ -12,7 +12,7 @@ user = "bds425"
 client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-scope = "playlist-modify-public user-follow-read user-read-email "
+scope = " user-read-recently-played playlist-modify-public user-follow-read user-read-email"
 token = util.prompt_for_user_token(user, scope, client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET, redirect_uri=REDIRECT_URI)
 
 if token:
@@ -54,12 +54,26 @@ def view_followed_artists():
 def add_items_to_playlist():
     print("which playlist would you like to add songs to?")
     playlist = input()
-    
+
+    Songs = sp.current_user_recently_played()
+    song_id = {}
+    for x in Songs["items"]:
+        name = x["track"]["name"]
+        id = x["track"]["id"]
+        song_id[name] = id
+        print(name)
+    print("Which song/songs would you like to add?")
+    add_song = input()
+    idOFSong = song_id[add_song]
+    randomList = []
+    randomList += [idOFSong]
+    sp.user_playlist_add_tracks(user, playlist_id[playlist], randomList)
 
 
 
-Request = 0
-while(1):
+
+
+while 1:
     print("What would you like to do?")
     print("1. View owned playlists")
     print("2. View followed artists")
@@ -71,25 +85,9 @@ while(1):
 
     if Request == "1":
         view_owned_playlists()
-        print()
-        print("Would you like to do anything else?")
-        answer = input()
-        if answer == "yes":
-            print()
-            continue
-        else:
-            break
-    if Request == "2":
+    elif Request == "2":
         view_followed_artists()
-        print()
-        print("Would you like to do anything else?")
-        answer = input()
-        if answer == "yes":
-            print()
-            continue
-        else:
-            break
-    if Request == "3":
+    elif Request == "3":
         create_new_playlist()
         print("playlist created")
         print()
@@ -99,28 +97,21 @@ while(1):
             add_items_to_playlist()
         if answer == "no":
             continue
-        print("Would you like to do anything else?")
-        answer = input()
-        if answer == "yes":
-            print()
-            continue
-        else:
-            break
-    if Request == "4":
+    elif Request == "4":
         add_items_to_playlist()
-        print()
-        print("Would you like to do anything else?")
-        answer = input()
-        if answer == "yes":
-            print()
-            continue
-        else:
-            break
-    if Request == "99":
-        break
     else:
         print("That is not an option")
         print()
+        continue
+
+    print()
+    print("Would you like to do something else?")
+    again = input()
+    if again == "yes":
+        print()
+        continue
+    else:
+        break
 
 
 
