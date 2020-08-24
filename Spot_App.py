@@ -74,6 +74,13 @@ def add_items_to_playlist():
 
 
 while 1:
+
+    temp = sp.user_playlists(user)
+    for x in temp['items']:
+        name = x['name']
+        id = x['id']
+        playlist_id[name] = id
+
     print("What would you like to do?")
     print("1. View owned playlists")
     print("2. View followed artists")
@@ -90,13 +97,6 @@ while 1:
     elif Request == "3":
         create_new_playlist()
         print("playlist created")
-        print()
-        print("Would you like to add songs to this playlist?")
-        answer = input()
-        if answer == "yes":
-            add_items_to_playlist()
-        if answer == "no":
-            continue
     elif Request == "4":
         add_items_to_playlist()
     else:
@@ -112,7 +112,3 @@ while 1:
         continue
     else:
         break
-
-
-
-
