@@ -21,17 +21,17 @@ if token:
 else:
     print("Can't get token for" + user)
 
+playlist_id = {}
+temp = sp.user_playlists(user)
+for x in temp['items']:
+    name = x['name']
+    id = x['id']
+    playlist_id[name] = id
+
 def view_owned_playlists():
     print("What playlist would you like to view?")
     request = input()
 
-    playlist_id = {}
-
-    temp = sp.user_playlists(user)
-    for x in temp['items']:
-        name = x['name']
-        id = x['id']
-        playlist_id[name] = id
     playlist = sp.playlist(playlist_id[request])
     print("Playlist Name:")
     print(playlist["name"])
@@ -52,34 +52,70 @@ def view_followed_artists():
         print(artists)
 
 def add_items_to_playlist():
-    print("in works")
+    print("which playlist would you like to add songs to?")
+    playlist = input()
+    
+
 
 
 Request = 0
-while(Request != "99"):
+while(1):
     print("What would you like to do?")
     print("1. View owned playlists")
     print("2. View followed artists")
     print("3. Make a new playlist")
     print("4. Add songs to a playlist")
+    print("99. Exit program")
     print("Pick a number:")
     Request = input()
 
     if Request == "1":
         view_owned_playlists()
+        print()
+        print("Would you like to do anything else?")
+        answer = input()
+        if answer == "yes":
+            print()
+            continue
+        else:
+            break
     if Request == "2":
         view_followed_artists()
+        print()
+        print("Would you like to do anything else?")
+        answer = input()
+        if answer == "yes":
+            print()
+            continue
+        else:
+            break
     if Request == "3":
         create_new_playlist()
         print("playlist created")
+        print()
         print("Would you like to add songs to this playlist?")
         answer = input()
         if answer == "yes":
             add_items_to_playlist()
         if answer == "no":
+            continue
+        print("Would you like to do anything else?")
+        answer = input()
+        if answer == "yes":
+            print()
+            continue
+        else:
             break
     if Request == "4":
         add_items_to_playlist()
+        print()
+        print("Would you like to do anything else?")
+        answer = input()
+        if answer == "yes":
+            print()
+            continue
+        else:
+            break
     if Request == "99":
         break
     else:
