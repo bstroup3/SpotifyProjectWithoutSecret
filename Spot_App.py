@@ -40,12 +40,12 @@ def view_owned_playlists():
         track = x["track"]["name"]
         print(track)
 
-def create_new_playlist(): #FIX ME
+def create_new_playlist():
     print("What would you like to name the playlist?")
     playlist_name = input()
     sp.user_playlist_create(user, playlist_name, True)
 
-def view_followed_artists(): #FIX ME
+def view_followed_artists():
     followed_artists = sp.current_user_followed_artists()
     for x in followed_artists["artists"]["items"]:
         artists = x["name"]
