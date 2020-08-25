@@ -69,6 +69,14 @@ def add_items_to_playlist():
     randomList += [idOFSong]
     sp.user_playlist_add_tracks(user, playlist_id[playlist], randomList)
 
+def add_image_to_playlist():
+    print("What playlist?")
+    request = input()
+    print("Go to this website to convert and copy Base64 data: https://onlinejpgtools.com/convert-jpg-to-base64")
+    print("Paste data image")
+    requestImage = input()
+    addInto = playlist_id[request]
+    sp.playlist_upload_cover_image(playlist_id=addInto, image_b64=requestImage)
 
 
 
