@@ -94,6 +94,7 @@ while 1:
     print("2. View followed artists")
     print("3. Make a new playlist")
     print("4. Add songs to a playlist")
+    print("5. Add cover image to playlist")
     print("Pick a number:")
     Request = input()
 
@@ -106,6 +107,10 @@ while 1:
         print("playlist created")
     elif Request == "4":
         add_items_to_playlist()
+        print("song/songs added")
+    elif Request == "5":
+        add_image_to_playlist()
+        print("Image added")
     else:
         print("That is not an option")
         print()
