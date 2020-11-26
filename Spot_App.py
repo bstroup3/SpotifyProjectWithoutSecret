@@ -2,7 +2,6 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy.util as util
-import tkinter as tk
 
 SPOTIPY_CLIENT_ID = "821a2836760b4990b1bec51520a7bc43"
 SPOTIPY_CLIENT_SECRET = "bcef5b3d0b9646a685b9b82c03399756"
@@ -127,7 +126,6 @@ def add_image_to_playlist():
 
 
 while 1:
-
     temp = sp.user_playlists(user)
     for x in temp['items']:
         name = x['name']
