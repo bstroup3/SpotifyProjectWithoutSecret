@@ -2,7 +2,7 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy.util as util
-import tkinter
+import tkinter as tk
 
 SPOTIPY_CLIENT_ID = "821a2836760b4990b1bec51520a7bc43"
 SPOTIPY_CLIENT_SECRET = "bcef5b3d0b9646a685b9b82c03399756"
@@ -29,6 +29,7 @@ for x in temp['items']:
     id = x['id']
     playlist_id[name] = id
 
+
 def view_owned_playlists():
     print("What playlist would you like to view?")
     request = input()
@@ -41,9 +42,10 @@ def view_owned_playlists():
         for x in playlist["tracks"]["items"]:
             track = x["track"]["name"]
             print(track)
-    finally:
+    except:
         print("Playlist not found")
         return
+
 
 def create_new_playlist():
     print("What would you like to name the playlist?")
@@ -123,7 +125,7 @@ def add_image_to_playlist():
     sp.playlist_upload_cover_image(playlist_id=addInto, image_b64=requestImage)
     print("Image added")
 
-
+   
 
 
 while 1:
@@ -132,6 +134,10 @@ while 1:
         name = x['name']
         id = x['id']
         playlist_id[name] = id
+
+    #window = tk.Tk()
+    #greeting = tk.Label(text="Spotify App")
+    #greeting.pack()
 
     print("What would you like to do?")
     print("1. View owned playlists")
