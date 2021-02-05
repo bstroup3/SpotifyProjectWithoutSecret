@@ -168,18 +168,16 @@ while 1:
         Label = tk.Label(newWindow, text="Which playlist would you like to view?", fg="#1DB954", background="#191414")
         Label.pack()
 
-
+        global entry
         entry = tk.Entry(newWindow, bg="#696969")
         entry.pack()
-
-        global name_var
-        name_var = entry.get()
 
         playlistDisplay = tk.Button(newWindow, text="Enter", command=playlist_display, activeforeground="#1DB954", highlightbackground="#191414")
         playlistDisplay.pack()
 
 
     def playlist_display():
+        name_var = entry.get()
         print(name_var + "test")
         view_owned_playlists(name_var)
 
