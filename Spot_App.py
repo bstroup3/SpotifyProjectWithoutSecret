@@ -38,13 +38,16 @@ def view_owned_playlists(request):
         songsList.title(playlist["name"])
         songsList.config(bg="#191414")
         songsList.geometry('300x300')
-        listOfSongs = tk.Label(songsList, text="Songs", fg="#1DB954", background="#191414")
-        listOfSongs.pack()
 
-        print("Songs:")
+        tracks = ""
+
         for x in playlist["tracks"]["items"]:
             track = x["track"]["name"]
-            print(track)
+            tracks += track
+            tracks += "\n"
+
+        listOfSongs = tk.Label(songsList, text="Songs\n" + tracks, fg="#1DB954", background="#191414")
+        listOfSongs.pack()
     except:
         popUp = tk.Tk()
         popUp.config(bg="#191414")
