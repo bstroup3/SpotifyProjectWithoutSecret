@@ -34,8 +34,13 @@ def view_owned_playlists(request):
 
     try:
         playlist = sp.playlist(playlist_id[request])
-        print("Playlist Name:")
-        print(playlist["name"])
+        songsList = tk.Tk()
+        songsList.title(playlist["name"])
+        songsList.config(bg="#191414")
+        songsList.geometry('300x300')
+        listOfSongs = tk.Label(songsList, text="Songs", fg="#1DB954", background="#191414")
+        listOfSongs.pack()
+
         print("Songs:")
         for x in playlist["tracks"]["items"]:
             track = x["track"]["name"]
@@ -178,7 +183,6 @@ while 1:
 
     def playlist_display():
         name_var = entry.get()
-        print(name_var + "test")
         view_owned_playlists(name_var)
 
 
