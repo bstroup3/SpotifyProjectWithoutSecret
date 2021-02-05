@@ -31,7 +31,6 @@ for x in temp['items']:
 
 
 def view_owned_playlists(request):
-    print("What playlist would you like to view?")
 
     try:
         playlist = sp.playlist(playlist_id[request])
@@ -42,8 +41,12 @@ def view_owned_playlists(request):
             track = x["track"]["name"]
             print(track)
     except:
-        print("Playlist not found")
-        return
+        popUp = tk.Tk()
+        popUp.config(bg="#191414")
+        popUp.geometry("200x50")
+        popUp.title('Error')
+        message = tk.Label(popUp, text="Playlist not found\n Try again", foreground="red", bg="#191414", font="Arial 20")
+        message.pack()
 
 
 def create_new_playlist():
@@ -138,7 +141,7 @@ while 1:
     window.config(bg="#191414")
     window.geometry("400x300")
     global greeting
-    greeting = tk.Label(window, text="Spotify App\nCreated by Ben Stroup" , foreground = "#1DB954", background="#191414", padx= 100, pady=10)
+    greeting = tk.Label(window, text="Spotify App\nCreated by Ben Stroup", foreground="#1DB954", background="#191414", padx=100, pady=10)
     greeting.grid(row=1, column=1)
 
     def update_to_main():
@@ -156,6 +159,7 @@ while 1:
         addImagePlaylist.grid(row=7, column=1)
 
     global viewOwnedPlaylist
+
     def viewOwnedPlaylist():
         newWindow = tk.Tk()
         newWindow.title('Spotify App')
@@ -164,18 +168,20 @@ while 1:
         Label = tk.Label(newWindow, text="Which playlist would you like to view?", fg="#1DB954", background="#191414")
         Label.pack()
 
+
         entry = tk.Entry(newWindow, bg="#696969")
         entry.pack()
 
-        global name
-        name += entry.get()
-        
+        global name_var
+        name_var = entry.get()
+
         playlistDisplay = tk.Button(newWindow, text="Enter", command=playlist_display, activeforeground="#1DB954", highlightbackground="#191414")
         playlistDisplay.pack()
 
+
     def playlist_display():
-        print(name+"test")
-        view_owned_playlists(name)
+        print(name_var + "test")
+        view_owned_playlists(name_var)
 
 
     global startButton
