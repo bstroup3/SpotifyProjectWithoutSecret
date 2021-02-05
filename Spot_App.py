@@ -65,9 +65,19 @@ def create_new_playlist():
 
 def view_followed_artists():
     followed_artists = sp.current_user_followed_artists()
+
+    artistsWindow = tk.Tk()
+    artistsWindow.geometry("400x400")
+    artistsWindow.config(bg="#191414")
+    artistsWindow.title('Followed Artists')
+    artistsList = ""
+
     for x in followed_artists["artists"]["items"]:
         artists = x["name"]
-        print(artists)
+        artistsList += artists
+        artistsList += "\n"
+    artistMessage = tk.Label(artistsWindow, text="Artists\n" + artistsList, bg="#191414", fg="#1DB954")
+    artistMessage.pack()
 
 def add_items_to_playlist():
     print("which playlist would you like to add songs to?")
