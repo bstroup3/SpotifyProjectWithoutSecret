@@ -58,10 +58,34 @@ def view_owned_playlists(request):
 
 
 def create_new_playlist():
-    print("What would you like to name the playlist?")
-    playlist_name = input()
-    sp.user_playlist_create(user, playlist_name, True)
-    print("playlist created")
+    createPlaylistWindow = tk.Tk()
+    createPlaylistWindow.geometry("400x400")
+    createPlaylistWindow.title('Create New Playlist')
+    createPlaylistWindow.config(bg="#191414")
+
+    createLabel = tk.Label(createPlaylistWindow, text="What would you like to name the playList?", bg="#191414", fg="#1DB954")
+    createLabel.pack()
+
+    global createEntry
+    createEntry = tk.Entry(createPlaylistWindow, bg="#696969")
+    createEntry.pack()
+
+    createButton = tk.Button(createPlaylistWindow, text="Enter", command=playlist_creation, highlightbackground="#191414")
+    createButton.pack()
+
+
+def playlist_creation():
+    new_playlist = createEntry.get()
+    sp.user_playlist_create(user, new_playlist, True)
+
+    playlist_completed_window = tk.Tk()
+    playlist_completed_window.geometry("300x200")
+    playlist_completed_window.title('Create New Playlist')
+    playlist_completed_window.config(bg="#191414")
+
+    complete_label = tk.Label(playlist_completed_window, text="Playlist Successfully Created", bg="#191414", fg="#1DB954", font="ProximaNova 20", pady=75)
+    complete_label.pack()
+
 
 def view_followed_artists():
     followed_artists = sp.current_user_followed_artists()
@@ -79,24 +103,63 @@ def view_followed_artists():
     artistMessage = tk.Label(artistsWindow, text="Artists\n" + artistsList, bg="#191414", fg="#1DB954")
     artistMessage.pack()
 
-def add_items_to_playlist():
-    print("which playlist would you like to add songs to?")
-    playlist = input()
+def recent_checklist():
+    enterButton.destroy()
+    playlistPrompt.config(text="Which song/songs would you like to add")
+    playlistEntry.destroy()
+    recentSongs = tk.Checkbutton(addPlaylistWindow, text="test", bg="#191414", fg="#1DB954", selectcolor="#191414")
 
-    Songs = sp.current_user_recently_played()
-    song_id = {}
-    for x in Songs["items"]:
-        name = x["track"]["name"]
-        id = x["track"]["id"]
-        song_id[name] = id
-        print(name)
-    print("Which song/songs would you like to add?")
-    add_song = input()
-    idOfSong = song_id[add_song]
-    randomList = []
-    randomList += [idOfSong]
-    sp.user_playlist_add_tracks(user, playlist_id[playlist], randomList)
-    print("song/songs added")
+    recentSongs.pack()
+
+def add_songs():
+    playlist = playlistEntry.get()
+
+
+global add_items_to_playlist
+def add_items_to_playlist():
+    try:
+        global addPlaylistWindow
+        addPlaylistWindow = tk.Tk()
+        addPlaylistWindow.config(bg="#191414")
+        addPlaylistWindow.geometry("400x400")
+        addPlaylistWindow.title('Add Songs To Playlist')
+
+        global playlistPrompt
+        playlistPrompt = tk.Label(addPlaylistWindow, text="Which playlist would you like to add songs to?", bg="#191414", fg="#1DB954")
+        playlistPrompt.pack()
+
+        global playlistEntry
+        playlistEntry = tk.Entry(addPlaylistWindow, bg="#696969")
+        playlistEntry.pack()
+
+        global enterButton
+        enterButton = tk.Button(addPlaylistWindow, text="Enter", command=recent_checklist, highlightbackground="#191414")
+        enterButton.pack()
+
+
+        #Songs = sp.current_user_recently_played()
+        #song_id = {}
+        #for x in Songs["items"]:
+        #    name = x["track"]["name"]
+        #    id = x["track"]["id"]
+        #    song_id[name] = id
+        #    print(name)
+        #print("Which song/songs would you like to add?")
+        #add_song = input()
+        #idOfSong = song_id[add_song]
+        #randomList = []
+        #randomList += [idOfSong]
+        #sp.user_playlist_add_tracks(user, playlist_id[playlist], randomList)
+        #print("song/songs added")
+
+    except:
+        popUp = tk.Tk()
+        popUp.config(bg="#191414")
+        popUp.geometry("200x50")
+        popUp.title('Error')
+        message = tk.Label(popUp, text="Playlist not found\n Try again", foreground="red", bg="#191414",
+                           font="Arial 20")
+        message.pack()
 
 def remove_songs_from_playlist():
     print("which playlist would you like to remove songs from?")
