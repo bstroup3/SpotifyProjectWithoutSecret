@@ -30,9 +30,8 @@ for x in temp['items']:
     playlist_id[name] = id
 
 
-def view_owned_playlists():
+def view_owned_playlists(request):
     print("What playlist would you like to view?")
-    request = input()
 
     try:
         playlist = sp.playlist(playlist_id[request])
@@ -125,7 +124,6 @@ def add_image_to_playlist():
     sp.playlist_upload_cover_image(playlist_id=addInto, image_b64=requestImage)
     print("Image added")
 
-   
 
 
 while 1:
@@ -135,19 +133,58 @@ while 1:
         id = x['id']
         playlist_id[name] = id
 
-    #window = tk.Tk()
-    #greeting = tk.Label(text="Spotify App")
-    #greeting.pack()
+    window = tk.Tk()
+    window.title('Spotify App')
+    window.config(bg="#191414")
+    window.geometry("400x300")
+    global greeting
+    greeting = tk.Label(window, text="Spotify App\nCreated by Ben Stroup" , foreground = "#1DB954", background="#191414", padx= 100, pady=10)
+    greeting.grid(row=1, column=1)
 
-    print("What would you like to do?")
-    print("1. View owned playlists")
-    print("2. View followed artists")
-    print("3. Make a new playlist")
-    print("4. Add songs to a playlist")
-    print("5. Remove songs from a playlist")
-    print("6. Add cover image to playlist")
-    print("Pick a number:")
-    Request = input()
+    def update_to_main():
+        greeting.config(text="What would you like to do?")
+        startButton.config(text="View Followed Artists", command=view_followed_artists)
+        viewPlaylist = tk.Button(window, text="View Owned Playlists", command=viewOwnedPlaylist, activeforeground="#1DB954", highlightbackground="#191414")
+        viewPlaylist.grid(row=3, column=1)
+        createPlaylist = tk.Button(window, text="Create Playlist", command=create_new_playlist, activeforeground="#1DB954", highlightbackground="#191414")
+        createPlaylist.grid(row=4, column=1)
+        addItemPlaylist = tk.Button(window, text="Add Items To Playlist", command=add_items_to_playlist, activeforeground="#1DB954", highlightbackground="#191414")
+        addItemPlaylist.grid(row=5, column=1)
+        removeSongPlaylist = tk.Button(window, text="Remove Items on Playlist", command=remove_songs_from_playlist, activeforeground="#1DB954", highlightbackground="#191414")
+        removeSongPlaylist.grid(row=6, column=1)
+        addImagePlaylist = tk.Button(window, text="Add Image to a Playlist", command=add_image_to_playlist, activeforeground="#1DB954", highlightbackground="#191414")
+        addImagePlaylist.grid(row=7, column=1)
+
+    global viewOwnedPlaylist
+    def viewOwnedPlaylist():
+        newWindow = tk.Tk()
+        newWindow.title('Spotify App')
+        newWindow.config(bg="#191414")
+        newWindow.geometry("400x400")
+        Label = tk.Label(newWindow, text="Which playlist would you like to view?", fg="#1DB954", background="#191414")
+        Label.pack()
+
+        entry = tk.Entry(newWindow, bg="#696969")
+        entry.pack()
+
+        global name
+        name += entry.get()
+        
+        playlistDisplay = tk.Button(newWindow, text="Enter", command=playlist_display, activeforeground="#1DB954", highlightbackground="#191414")
+        playlistDisplay.pack()
+
+    def playlist_display():
+        print(name+"test")
+        view_owned_playlists(name)
+
+
+    global startButton
+    startButton = tk.Button(window, text="Start", command=update_to_main, activeforeground="#1DB954", highlightbackground="#191414")
+    startButton.grid(row=2, column=1)
+
+    window.mainloop()
+
+
 
     if Request == "1":
         view_owned_playlists()
