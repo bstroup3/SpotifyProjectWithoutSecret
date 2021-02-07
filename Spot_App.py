@@ -103,11 +103,31 @@ def view_followed_artists():
     artistMessage = tk.Label(artistsWindow, text="Artists\n" + artistsList, bg="#191414", fg="#1DB954")
     artistMessage.pack()
 
+def checklist_maker(name):
+    this.name = tk.Checkbutton(addPlaylistWindow, text=name, bg="#191414", fg="#1DB954", selectcolor="#191414", switch=1)
+
 def recent_checklist():
     enterButton.destroy()
     playlistPrompt.config(text="Which song/songs would you like to add")
     playlistEntry.destroy()
-    recentSongs = tk.Checkbutton(addPlaylistWindow, text="test", bg="#191414", fg="#1DB954", selectcolor="#191414")
+    global list
+    list = []
+    Songs = sp.current_user_recently_played()
+    song_id = {}
+    for x in Songs["items"]:
+        name = x["track"]["name"]
+        id = x["track"]["id"]
+        song_id[name] = id
+        list.append(name)
+
+    for i in range(50):
+        checklist_maker(list[i])
+
+
+
+
+
+    recentSongs = tk.Checkbutton(addPlaylistWindow, text="test", bg="#191414", fg="#1DB954", selectcolor="#191414", )
 
     recentSongs.pack()
 
@@ -137,13 +157,6 @@ def add_items_to_playlist():
         enterButton.pack()
 
 
-        #Songs = sp.current_user_recently_played()
-        #song_id = {}
-        #for x in Songs["items"]:
-        #    name = x["track"]["name"]
-        #    id = x["track"]["id"]
-        #    song_id[name] = id
-        #    print(name)
         #print("Which song/songs would you like to add?")
         #add_song = input()
         #idOfSong = song_id[add_song]
@@ -221,13 +234,14 @@ while 1:
     window.title('Spotify App')
     window.config(bg="#191414")
     window.geometry("400x300")
+
     global greeting
     greeting = tk.Label(window, text="Spotify App\nCreated by Ben Stroup", foreground="#1DB954", background="#191414", padx=100, pady=10)
     greeting.grid(row=1, column=1)
 
     def update_to_main():
         greeting.config(text="What would you like to do?")
-        startButton.config(text="View Followed Artists", command=view_followed_artists)
+        startButton.config(text="View Followed Artists", command=view_followed_artists, activeforeground="#1DB954")
         viewPlaylist = tk.Button(window, text="View Owned Playlists", command=viewOwnedPlaylist, activeforeground="#1DB954", highlightbackground="#191414")
         viewPlaylist.grid(row=3, column=1)
         createPlaylist = tk.Button(window, text="Create Playlist", command=create_new_playlist, activeforeground="#1DB954", highlightbackground="#191414")
