@@ -2,7 +2,8 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy.util as util
-import tkinter as tk
+
+from tkinter import *
 
 SPOTIPY_CLIENT_ID = "821a2836760b4990b1bec51520a7bc43"
 SPOTIPY_CLIENT_SECRET = "bcef5b3d0b9646a685b9b82c03399756"
@@ -34,7 +35,7 @@ def view_owned_playlists(request):
 
     try:
         playlist = sp.playlist(playlist_id[request])
-        songsList = tk.Tk()
+        songsList = Tk()
         songsList.title(playlist["name"])
         songsList.config(bg="#191414")
         songsList.geometry('300x300')
@@ -46,31 +47,31 @@ def view_owned_playlists(request):
             tracks += track
             tracks += "\n"
 
-        listOfSongs = tk.Label(songsList, text="Songs\n" + tracks, fg="#1DB954", background="#191414")
+        listOfSongs = Label(songsList, text="Songs\n" + tracks, fg="#1DB954", background="#191414")
         listOfSongs.pack()
     except:
-        popUp = tk.Tk()
+        popUp = Tk()
         popUp.config(bg="#191414")
         popUp.geometry("200x50")
         popUp.title('Error')
-        message = tk.Label(popUp, text="Playlist not found\n Try again", foreground="red", bg="#191414", font="Arial 20")
+        message = Label(popUp, text="Playlist not found\n Try again", foreground="red", bg="#191414", font="Arial 20")
         message.pack()
 
 
 def create_new_playlist():
-    createPlaylistWindow = tk.Tk()
+    createPlaylistWindow = Tk()
     createPlaylistWindow.geometry("400x400")
     createPlaylistWindow.title('Create New Playlist')
     createPlaylistWindow.config(bg="#191414")
 
-    createLabel = tk.Label(createPlaylistWindow, text="What would you like to name the playList?", bg="#191414", fg="#1DB954")
+    createLabel = Label(createPlaylistWindow, text="What would you like to name the playList?", bg="#191414", fg="#1DB954")
     createLabel.pack()
 
     global createEntry
-    createEntry = tk.Entry(createPlaylistWindow, bg="#696969")
+    createEntry = Entry(createPlaylistWindow, bg="#696969")
     createEntry.pack()
 
-    createButton = tk.Button(createPlaylistWindow, text="Enter", command=playlist_creation, highlightbackground="#191414")
+    createButton = Button(createPlaylistWindow, text="Enter", command=playlist_creation, highlightbackground="#191414")
     createButton.pack()
 
 
@@ -78,19 +79,19 @@ def playlist_creation():
     new_playlist = createEntry.get()
     sp.user_playlist_create(user, new_playlist, True)
 
-    playlist_completed_window = tk.Tk()
+    playlist_completed_window = Tk()
     playlist_completed_window.geometry("300x200")
     playlist_completed_window.title('Create New Playlist')
     playlist_completed_window.config(bg="#191414")
 
-    complete_label = tk.Label(playlist_completed_window, text="Playlist Successfully Created", bg="#191414", fg="#1DB954", font="ProximaNova 20", pady=75)
+    complete_label = Label(playlist_completed_window, text="Playlist Successfully Created", bg="#191414", fg="#1DB954", font="ProximaNova 20", pady=75)
     complete_label.pack()
 
 
 def view_followed_artists():
     followed_artists = sp.current_user_followed_artists()
 
-    artistsWindow = tk.Tk()
+    artistsWindow = Tk()
     artistsWindow.geometry("400x400")
     artistsWindow.config(bg="#191414")
     artistsWindow.title('Followed Artists')
@@ -100,14 +101,17 @@ def view_followed_artists():
         artists = x["name"]
         artistsList += artists
         artistsList += "\n"
-    artistMessage = tk.Label(artistsWindow, text="Artists\n" + artistsList, bg="#191414", fg="#1DB954")
+    artistMessage = Label(artistsWindow, text="Artists\n" + artistsList, bg="#191414", fg="#1DB954")
     artistMessage.pack()
 
-def checklist_maker(name):
-    this.name = tk.Checkbutton(addPlaylistWindow, text=name, bg="#191414", fg="#1DB954", selectcolor="#191414", switch=1)
+def checklist_maker(checker):
+    checker.name = Checkbutton(addPlaylistWindow, command=checker.control.set(1), text=checker.name, bg="#191414", fg="#1DB954", variable=checker.control)
+    checker.name.pack()
+
+
 
 def recent_checklist():
-    enterButton.destroy()
+    #enterButton.destroy()
     playlistPrompt.config(text="Which song/songs would you like to add")
     playlistEntry.destroy()
     global list
@@ -120,57 +124,73 @@ def recent_checklist():
         song_id[name] = id
         list.append(name)
 
-    for i in range(50):
-        checklist_maker(list[i])
+    global recentSongClass
+    class recentSongClass:
+        def __init__(self, songName):
+            self.name = songName
+            self.control = IntVar()
+    global recentSongList
+    recentSongList = []
+
+    for j in range(50):
+        recentSongList.append(recentSongClass(list[j]))
+        checklist_maker(recentSongList[j])
+
+    enterButton.config(addPlaylistWindow, command=add_songs)
+    enterButton.pack()
 
 
-
-
-
-    recentSongs = tk.Checkbutton(addPlaylistWindow, text="test", bg="#191414", fg="#1DB954", selectcolor="#191414", )
-
-    recentSongs.pack()
 
 def add_songs():
+    newList = []
+    for i in recentSongList:
+        if recentSongList[i].control == 1:
+            newList.append(recentSongList[i])
+    randomList = []
     playlist = playlistEntry.get()
+    for i in newList:
+        idOfSong = song_id[newList[i]]
+        randomList.append(idOfSong)
+
+    sp.playlist_add_items(playlist_id[playlist], randomList)
+
+    addSongSuccess = Tk()
+    addSongSuccess.config(bg="#191414")
+    addSongSuccess.title('Spotify App')
+    addSongSuccess.geometry('300x200')
+
+    successLabel = Label(addSongSuccess, text="Songs Successfully Added", fg="#1DB954", bg="#191414", font="ProximaNova 20")
+    successLabel.pack()
+
 
 
 global add_items_to_playlist
 def add_items_to_playlist():
     try:
         global addPlaylistWindow
-        addPlaylistWindow = tk.Tk()
+        addPlaylistWindow = Tk()
         addPlaylistWindow.config(bg="#191414")
         addPlaylistWindow.geometry("400x400")
         addPlaylistWindow.title('Add Songs To Playlist')
 
         global playlistPrompt
-        playlistPrompt = tk.Label(addPlaylistWindow, text="Which playlist would you like to add songs to?", bg="#191414", fg="#1DB954")
+        playlistPrompt = Label(addPlaylistWindow, text="Which playlist would you like to add songs to?", bg="#191414", fg="#1DB954")
         playlistPrompt.pack()
 
         global playlistEntry
-        playlistEntry = tk.Entry(addPlaylistWindow, bg="#696969")
+        playlistEntry = Entry(addPlaylistWindow, bg="#696969")
         playlistEntry.pack()
 
         global enterButton
-        enterButton = tk.Button(addPlaylistWindow, text="Enter", command=recent_checklist, highlightbackground="#191414")
+        enterButton = Button(addPlaylistWindow, text="Enter", command=recent_checklist, highlightbackground="#191414")
         enterButton.pack()
 
-
-        #print("Which song/songs would you like to add?")
-        #add_song = input()
-        #idOfSong = song_id[add_song]
-        #randomList = []
-        #randomList += [idOfSong]
-        #sp.user_playlist_add_tracks(user, playlist_id[playlist], randomList)
-        #print("song/songs added")
-
     except:
-        popUp = tk.Tk()
+        popUp = Tk()
         popUp.config(bg="#191414")
         popUp.geometry("200x50")
         popUp.title('Error')
-        message = tk.Label(popUp, text="Playlist not found\n Try again", foreground="red", bg="#191414",
+        message = Label(popUp, text="Playlist not found\n Try again", foreground="red", bg="#191414",
                            font="Arial 20")
         message.pack()
 
@@ -230,44 +250,44 @@ while 1:
         id = x['id']
         playlist_id[name] = id
 
-    window = tk.Tk()
+    window = Tk()
     window.title('Spotify App')
     window.config(bg="#191414")
     window.geometry("400x300")
 
     global greeting
-    greeting = tk.Label(window, text="Spotify App\nCreated by Ben Stroup", foreground="#1DB954", background="#191414", padx=100, pady=10)
+    greeting = Label(window, text="Spotify App\nCreated by Ben Stroup", foreground="#1DB954", background="#191414", padx=100, pady=10)
     greeting.grid(row=1, column=1)
 
     def update_to_main():
         greeting.config(text="What would you like to do?")
         startButton.config(text="View Followed Artists", command=view_followed_artists, activeforeground="#1DB954")
-        viewPlaylist = tk.Button(window, text="View Owned Playlists", command=viewOwnedPlaylist, activeforeground="#1DB954", highlightbackground="#191414")
+        viewPlaylist = Button(window, text="View Owned Playlists", command=viewOwnedPlaylist, activeforeground="#1DB954", highlightbackground="#191414")
         viewPlaylist.grid(row=3, column=1)
-        createPlaylist = tk.Button(window, text="Create Playlist", command=create_new_playlist, activeforeground="#1DB954", highlightbackground="#191414")
+        createPlaylist = Button(window, text="Create Playlist", command=create_new_playlist, activeforeground="#1DB954", highlightbackground="#191414")
         createPlaylist.grid(row=4, column=1)
-        addItemPlaylist = tk.Button(window, text="Add Items To Playlist", command=add_items_to_playlist, activeforeground="#1DB954", highlightbackground="#191414")
+        addItemPlaylist = Button(window, text="Add Items To Playlist", command=add_items_to_playlist, activeforeground="#1DB954", highlightbackground="#191414")
         addItemPlaylist.grid(row=5, column=1)
-        removeSongPlaylist = tk.Button(window, text="Remove Items on Playlist", command=remove_songs_from_playlist, activeforeground="#1DB954", highlightbackground="#191414")
+        removeSongPlaylist = Button(window, text="Remove Items on Playlist", command=remove_songs_from_playlist, activeforeground="#1DB954", highlightbackground="#191414")
         removeSongPlaylist.grid(row=6, column=1)
-        addImagePlaylist = tk.Button(window, text="Add Image to a Playlist", command=add_image_to_playlist, activeforeground="#1DB954", highlightbackground="#191414")
+        addImagePlaylist = Button(window, text="Add Image to a Playlist", command=add_image_to_playlist, activeforeground="#1DB954", highlightbackground="#191414")
         addImagePlaylist.grid(row=7, column=1)
 
     global viewOwnedPlaylist
 
     def viewOwnedPlaylist():
-        newWindow = tk.Tk()
+        newWindow = Tk()
         newWindow.title('Spotify App')
         newWindow.config(bg="#191414")
         newWindow.geometry("400x400")
-        Label = tk.Label(newWindow, text="Which playlist would you like to view?", fg="#1DB954", background="#191414")
+        Label = Label(newWindow, text="Which playlist would you like to view?", fg="#1DB954", background="#191414")
         Label.pack()
 
         global entry
-        entry = tk.Entry(newWindow, bg="#696969")
+        entry = Entry(newWindow, bg="#696969")
         entry.pack()
 
-        playlistDisplay = tk.Button(newWindow, text="Enter", command=playlist_display, activeforeground="#1DB954", highlightbackground="#191414")
+        playlistDisplay = Button(newWindow, text="Enter", command=playlist_display, activeforeground="#1DB954", highlightbackground="#191414")
         playlistDisplay.pack()
 
 
@@ -277,34 +297,8 @@ while 1:
 
 
     global startButton
-    startButton = tk.Button(window, text="Start", command=update_to_main, activeforeground="#1DB954", highlightbackground="#191414")
+    startButton = Button(window, text="Start", command=update_to_main, activeforeground="#1DB954", highlightbackground="#191414")
     startButton.grid(row=2, column=1)
 
     window.mainloop()
-
-
-
-    if Request == "1":
-        view_owned_playlists()
-    elif Request == "2":
-        view_followed_artists()
-    elif Request == "3":
-        create_new_playlist()
-    elif Request == "4":
-        add_items_to_playlist()
-    elif Request == "5":
-        remove_songs_from_playlist()
-    elif Request == "6":
-        add_image_to_playlist()
-    else:
-        print("That is not an option")
-        print()
-
-    print()
-    print("Would you like to do something else?")
-    again = input()
-    if again == "yes":
-        print()
-        continue
-    else:
-        break
+    break
