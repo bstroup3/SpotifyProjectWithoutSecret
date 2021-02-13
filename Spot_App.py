@@ -105,7 +105,7 @@ def view_followed_artists():
     artistMessage.pack()
 
 def checklist_maker(checker):
-    checker.name = Checkbutton(addPlaylistWindow, command=checker.control.set(1), text=checker.name, bg="#191414", fg="#1DB954", variable=checker.control)
+    checker.name = Checkbutton(addPlaylistWindow, command=checker.set_to_true(), text=checker.name, bg="#191414", fg="#1DB954", variable=checker.control)
     checker.name.pack()
 
 
@@ -128,7 +128,12 @@ def recent_checklist():
     class recentSongClass:
         def __init__(self, songName):
             self.name = songName
-            self.control = IntVar()
+            self.control = False
+
+        def set_to_true(self):
+            self.control = True
+
+
     global recentSongList
     recentSongList = []
 
@@ -136,15 +141,15 @@ def recent_checklist():
         recentSongList.append(recentSongClass(list[j]))
         checklist_maker(recentSongList[j])
 
-    enterButton.config(addPlaylistWindow, command=add_songs)
+    enterButton.config(command=add_songs)
     enterButton.pack()
 
 
 
 def add_songs():
     newList = []
-    for i in recentSongList:
-        if recentSongList[i].control == 1:
+    for i in range(50):
+        if recentSongList[i].control:
             newList.append(recentSongList[i])
     randomList = []
     playlist = playlistEntry.get()
@@ -256,22 +261,32 @@ while 1:
     window.geometry("400x300")
 
     global greeting
-    greeting = Label(window, text="Spotify App\nCreated by Ben Stroup", foreground="#1DB954", background="#191414", padx=100, pady=10)
+    greeting = Label(window, text="Spotify App\nCreated by Ben Stroup", foreground="#1DB954", background="#191414",padx=100, pady=10)
     greeting.grid(row=1, column=1)
+
+    userLabel = Label(window, fg="#1DB954", bg="#191414", text="Enter your Username")
+    global userText
+    userText = Entry(window, bg="#191414", fg="#1DB954")
+    userLabel.grid(row=2, column=1)
+    userText.grid(row=3, column=1)
+
+
 
     def update_to_main():
         greeting.config(text="What would you like to do?")
+        userLabel.destroy()
+        userText.destroy()
         startButton.config(text="View Followed Artists", command=view_followed_artists, activeforeground="#1DB954")
         viewPlaylist = Button(window, text="View Owned Playlists", command=viewOwnedPlaylist, activeforeground="#1DB954", highlightbackground="#191414")
         viewPlaylist.grid(row=3, column=1)
         createPlaylist = Button(window, text="Create Playlist", command=create_new_playlist, activeforeground="#1DB954", highlightbackground="#191414")
-        createPlaylist.grid(row=4, column=1)
+        createPlaylist.grid(row=5, column=1)
         addItemPlaylist = Button(window, text="Add Items To Playlist", command=add_items_to_playlist, activeforeground="#1DB954", highlightbackground="#191414")
-        addItemPlaylist.grid(row=5, column=1)
+        addItemPlaylist.grid(row=6, column=1)
         removeSongPlaylist = Button(window, text="Remove Items on Playlist", command=remove_songs_from_playlist, activeforeground="#1DB954", highlightbackground="#191414")
-        removeSongPlaylist.grid(row=6, column=1)
+        removeSongPlaylist.grid(row=7, column=1)
         addImagePlaylist = Button(window, text="Add Image to a Playlist", command=add_image_to_playlist, activeforeground="#1DB954", highlightbackground="#191414")
-        addImagePlaylist.grid(row=7, column=1)
+        addImagePlaylist.grid(row=8, column=1)
 
     global viewOwnedPlaylist
 
@@ -298,7 +313,7 @@ while 1:
 
     global startButton
     startButton = Button(window, text="Start", command=update_to_main, activeforeground="#1DB954", highlightbackground="#191414")
-    startButton.grid(row=2, column=1)
+    startButton.grid(row=4, column=1)
 
     window.mainloop()
     break
