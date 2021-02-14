@@ -14,7 +14,7 @@ user = "bds425"
 client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-scope = " user-read-recently-played playlist-modify-public user-follow-read user-read-email"
+scope = "user-read-recently-played playlist-modify-public user-follow-read user-read-email user-read-private"
 token = util.prompt_for_user_token(user, scope, client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET, redirect_uri=REDIRECT_URI)
 
 if token:
@@ -264,18 +264,17 @@ while 1:
     greeting = Label(window, text="Spotify App\nCreated by Ben Stroup", foreground="#1DB954", background="#191414",padx=100, pady=10)
     greeting.grid(row=1, column=1)
 
-    userLabel = Label(window, fg="#1DB954", bg="#191414", text="Enter your Username")
-    global userText
-    userText = Entry(window, bg="#191414", fg="#1DB954")
-    userLabel.grid(row=2, column=1)
-    userText.grid(row=3, column=1)
+    #userLabel = Label(window, fg="#1DB954", bg="#191414", text="Enter your Username")
+    #userText = Entry(window, bg="#191414", fg="#1DB954")
+    #userLabel.grid(row=2, column=1)
+    #userText.grid(row=3, column=1)
 
 
 
     def update_to_main():
         greeting.config(text="What would you like to do?")
-        userLabel.destroy()
-        userText.destroy()
+        #userLabel.destroy()
+        #userText.destroy()
         startButton.config(text="View Followed Artists", command=view_followed_artists, activeforeground="#1DB954")
         viewPlaylist = Button(window, text="View Owned Playlists", command=viewOwnedPlaylist, activeforeground="#1DB954", highlightbackground="#191414")
         viewPlaylist.grid(row=3, column=1)
@@ -295,8 +294,8 @@ while 1:
         newWindow.title('Spotify App')
         newWindow.config(bg="#191414")
         newWindow.geometry("400x400")
-        Label = Label(newWindow, text="Which playlist would you like to view?", fg="#1DB954", background="#191414")
-        Label.pack()
+        viewPlaylistLabel = Label(newWindow, text="Which playlist would you like to view?", fg="#1DB954", background="#191414")
+        viewPlaylistLabel.pack()
 
         global entry
         entry = Entry(newWindow, bg="#696969")
