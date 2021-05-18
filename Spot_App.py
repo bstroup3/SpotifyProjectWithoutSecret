@@ -246,8 +246,13 @@ def add_image_to_playlist():
     sp.playlist_upload_cover_image(playlist_id=addInto, image_b64=requestImage)
     print("Image added")
 
-
-
+def returntoHome():
+    window.destroy()
+    window1 = Tk()
+    window1.title('Spotify App')
+    window1.config(bg="#191414")
+    window1.geometry("400x300")
+    greeting.grid(row=1, column=1)
 while 1:
     temp = sp.user_playlists(user)
     for x in temp['items']:
@@ -264,17 +269,20 @@ while 1:
     greeting = Label(window, text="Spotify App\nCreated by Ben Stroup", foreground="#1DB954", background="#191414",padx=100, pady=10)
     greeting.grid(row=1, column=1)
 
-    #userLabel = Label(window, fg="#1DB954", bg="#191414", text="Enter your Username")
-    #userText = Entry(window, bg="#191414", fg="#1DB954")
-    #userLabel.grid(row=2, column=1)
-    #userText.grid(row=3, column=1)
+    userLabel = Label(window, fg="#1DB954", bg="#191414", text="Enter your Username")
+    userText = Entry(window, bg="#191414", fg="#1DB954")
+    userLabel.grid(row=2, column=1)
+    userText.grid(row=3, column=1)
 
 
 
     def update_to_main():
+
+        userLabel.destroy()
+        userText.destroy()
+        userName = Label(window, text="Welcome "+sp.current_user()["display_name"], foreground="#1DB954", background="#191414")
+        userName.grid(row=0, column=1)
         greeting.config(text="What would you like to do?")
-        #userLabel.destroy()
-        #userText.destroy()
         startButton.config(text="View Followed Artists", command=view_followed_artists, activeforeground="#1DB954")
         viewPlaylist = Button(window, text="View Owned Playlists", command=viewOwnedPlaylist, activeforeground="#1DB954", highlightbackground="#191414")
         viewPlaylist.grid(row=3, column=1)
@@ -286,7 +294,6 @@ while 1:
         removeSongPlaylist.grid(row=7, column=1)
         addImagePlaylist = Button(window, text="Add Image to a Playlist", command=add_image_to_playlist, activeforeground="#1DB954", highlightbackground="#191414")
         addImagePlaylist.grid(row=8, column=1)
-
     global viewOwnedPlaylist
 
     def viewOwnedPlaylist():
