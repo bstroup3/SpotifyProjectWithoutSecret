@@ -104,8 +104,8 @@ def view_followed_artists():
     artistMessage = Label(artistsWindow, text="Artists\n" + artistsList, bg="#191414", fg="#1DB954")
     artistMessage.pack()
 
-def checklist_maker(checker):
-    checker.name = Checkbutton(addPlaylistWindow, command=checker.set_to_true(), text=checker.name, bg="#191414", fg="#1DB954", variable=checker.control)
+def checklist_maker(checker, i):
+    checker.name = Checkbutton(addPlaylistWindow, command=checker.set_to_true, text=checker.name, bg="#191414", fg="#1DB954", variable=checker.control)
     checker.name.pack()
 
 
@@ -139,7 +139,7 @@ def recent_checklist():
 
     for j in range(50):
         recentSongList.append(recentSongClass(list[j]))
-        checklist_maker(recentSongList[j])
+        checklist_maker(recentSongList[j], j)
 
     enterButton.config(command=add_songs)
     enterButton.pack()
