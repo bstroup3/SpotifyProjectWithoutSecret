@@ -111,7 +111,6 @@ def checklist_maker(checker):
 
 
 def recent_checklist():
-    #enterButton.destroy()
     playlistPrompt.config(text="Which song/songs would you like to add")
     playlistEntry.destroy()
     global list
@@ -275,9 +274,7 @@ while 1:
     userText.grid(row=3, column=1)
 
 
-
     def update_to_main():
-
         userLabel.destroy()
         userText.destroy()
         userName = Label(window, text="Welcome "+sp.current_user()["display_name"], foreground="#1DB954", background="#191414")
