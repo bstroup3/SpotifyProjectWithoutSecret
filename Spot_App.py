@@ -117,6 +117,7 @@ def recent_checklist():
     global list
     list = []
     Songs = sp.current_user_recently_played()
+    global song_id
     song_id = {}
     for x in Songs["items"]:
         name = x["track"]["name"]
