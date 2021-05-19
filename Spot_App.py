@@ -112,6 +112,8 @@ def checklist_maker(checker, i):
 
 def recent_checklist():
     playlistPrompt.config(text="Which song/songs would you like to add")
+    global playlist
+    playlist = playlistEntry.get()
     playlistEntry.destroy()
     global list
     list = []
@@ -157,8 +159,8 @@ def add_songs():
         if recentSongList[i].control:
             newList.append(recentSongList[i])
     randomList = []
-    playlist = playlistEntry.get()
-    for i in newList:
+    #playlist = playlistEntry.get()
+    for i in range(newList.length):
         idOfSong = song_id[newList[i]]
         randomList.append(idOfSong)
 
