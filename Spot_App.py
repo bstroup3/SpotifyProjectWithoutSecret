@@ -169,7 +169,7 @@ def add_songs():
     addSongSuccess = Tk()
     addSongSuccess.config(bg="#191414")
     addSongSuccess.title('Spotify App')
-    addSongSuccess.geometry('300x200')
+    addSongSuccess.geometry('400x150')
 
     successLabel = Label(addSongSuccess, text="Songs Successfully Added", fg="#1DB954", bg="#191414", font="ProximaNova 20")
     successLabel.pack()
@@ -207,6 +207,34 @@ def add_items_to_playlist():
         message.pack()
 
 def remove_songs_from_playlist():
+    try:
+        global addPlaylistWindow
+        addPlaylistWindow = Tk()
+        addPlaylistWindow.config(bg="#191414")
+        addPlaylistWindow.geometry("400x400")
+        addPlaylistWindow.title('Add Songs To Playlist')
+
+        global playlistPrompt
+        playlistPrompt = Label(addPlaylistWindow, text="Which playlist would you like to remove songs from?", bg="#191414", fg="#1DB954")
+        playlistPrompt.pack()
+
+        global playlistEntry
+        playlistEntry = Entry(addPlaylistWindow, bg="#696969")
+        playlistEntry.pack()
+
+        global enterButton
+        enterButton = Button(addPlaylistWindow, text="Enter", command=remove_songs, highlightbackground="#191414")
+        enterButton.pack()
+
+    except:
+        popUp = Tk()
+        popUp.config(bg="#191414")
+        popUp.geometry("200x50")
+        popUp.title('Error')
+        message = Label(popUp, text="Playlist not found\n Try again", foreground="red", bg="#191414",
+                           font="Arial 20")
+        message.pack()
+    """
     print("which playlist would you like to remove songs from?")
     request = input()
 
@@ -241,6 +269,17 @@ def remove_songs_from_playlist():
     finally:
         print("Could not find Playlist")
         return
+    """
+
+def remove_songs():
+    playlistPrompt.config(text="Which songs would you like to remove")
+    global request 
+    request = playlistEntry.get()
+    playlistEntry.destroy()
+    global list 
+    list = []
+    playlist = sp.playlist(playlist_id[request])
+    print(playlist[name])
 
 
 def add_image_to_playlist():
