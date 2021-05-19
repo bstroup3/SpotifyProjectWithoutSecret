@@ -157,10 +157,10 @@ def add_songs():
     newList = []
     for i in range(50):
         if recentSongList[i].control:
-            newList.append(recentSongList[i])
+            newList.append(recentSongList[i].name)
     randomList = []
     #playlist = playlistEntry.get()
-    for i in range(newList.length):
+    for i in range(len(newList)):
         idOfSong = song_id[newList[i]]
         randomList.append(idOfSong)
 
