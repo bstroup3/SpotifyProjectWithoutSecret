@@ -239,42 +239,7 @@ def remove_songs_from_playlist():
         message = Label(popUp, text="Playlist not found\n Try again", foreground="red", bg="#191414",
                            font="Arial 20")
         message.pack()
-    """
-    print("which playlist would you like to remove songs from?")
-    request = input()
 
-    try:
-        playlist = sp.playlist(playlist_id[request])
-        print("Playlist Name:")
-        print(playlist["name"])
-        print("Songs:")
-        song_id = {}
-        for x in playlist["tracks"]["items"]:
-            track = x["track"]["name"]
-            id = x["track"]["id"]
-            song_id[track] = id
-            print(track)
-
-        removed_songs = []
-
-        while 1:
-            print("Which song would you like to remove?")
-            song = input()
-            idOfSong = song_id[song]
-            removed_songs += [idOfSong]
-            print("would you like to remove another song?")
-            answer = input()
-            if answer == "yes" or answer == "Yes":
-                continue
-            else:
-                break
-        sp.user_playlist_remove_all_occurrences_of_tracks(user, playlist_id[request], removed_songs)
-        print("song/songs removed")
-
-    finally:
-        print("Could not find Playlist")
-        return
-    """
 
 def remove_songs():
     playlistPrompt.config(text="Which songs would you like to remove")
