@@ -105,8 +105,8 @@ def view_followed_artists():
     artistMessage.pack()
 
 def checklist_maker(checker, i):
-    checker.name = Checkbutton(addPlaylistWindow, command=checker.set_to_true, text=checker.name, bg="#191414", fg="#1DB954", variable=checker.control)
-    checker.name.pack()
+    checkerButton = Checkbutton(addPlaylistWindow, command=checker.toggle, text=checker.name, bg="#191414", fg="#1DB954", variable=checker.name)
+    checkerButton.pack()
 
 
 
@@ -130,8 +130,13 @@ def recent_checklist():
             self.name = songName
             self.control = False
 
-        def set_to_true(self):
-            self.control = True
+        def toggle(self):
+            if(self.control == False):
+                self.control = True
+            else:
+                self.control = False
+            #print(self.name, self.control)
+        
 
 
     global recentSongList
