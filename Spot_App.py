@@ -104,8 +104,12 @@ def view_followed_artists():
     artistMessage = Label(artistsWindow, text="Artists\n" + artistsList, bg="#191414", fg="#1DB954")
     artistMessage.pack()
 
-def checklist_maker(checker, i):
+def checklist_maker(checker):
     checkerButton = Checkbutton(addPlaylistWindow, command=checker.toggle, text=checker.name, bg="#191414", fg="#1DB954", variable=checker.name)
+    checkerButton.pack()
+
+def checklist_maker_remove(checker):
+    checkerButton = Checkbutton(removePlaylistWindow, command=checker.toggle, text=checker.name, bg="#191414", fg="#1DB954", variable=checker.name)
     checkerButton.pack()
 
 
@@ -127,6 +131,7 @@ def recent_checklist():
         list.append(name)
 
     global recentSongClass
+
     class recentSongClass:
         def __init__(self, songName):
             self.name = songName
@@ -137,7 +142,7 @@ def recent_checklist():
                 self.control = True
             else:
                 self.control = False
-            #print(self.name, self.control)
+
         
 
 
@@ -146,7 +151,7 @@ def recent_checklist():
 
     for j in range(50):
         recentSongList.append(recentSongClass(list[j]))
-        checklist_maker(recentSongList[j], j)
+        checklist_maker(recentSongList[j])
 
     enterButton.config(command=add_songs)
     enterButton.pack()
@@ -208,22 +213,22 @@ def add_items_to_playlist():
 
 def remove_songs_from_playlist():
     try:
-        global addPlaylistWindow
-        addPlaylistWindow = Tk()
-        addPlaylistWindow.config(bg="#191414")
-        addPlaylistWindow.geometry("400x400")
-        addPlaylistWindow.title('Add Songs To Playlist')
+        global removePlaylistWindow
+        removePlaylistWindow = Tk()
+        removePlaylistWindow.config(bg="#191414")
+        removePlaylistWindow.geometry("400x400")
+        removePlaylistWindow.title('Remove Songs From Playlist')
 
         global playlistPrompt
-        playlistPrompt = Label(addPlaylistWindow, text="Which playlist would you like to remove songs from?", bg="#191414", fg="#1DB954")
+        playlistPrompt = Label(removePlaylistWindow, text="Which playlist would you like to remove songs from?", bg="#191414", fg="#1DB954")
         playlistPrompt.pack()
 
         global playlistEntry
-        playlistEntry = Entry(addPlaylistWindow, bg="#696969")
+        playlistEntry = Entry(removePlaylistWindow, bg="#696969")
         playlistEntry.pack()
 
         global enterButton
-        enterButton = Button(addPlaylistWindow, text="Enter", command=remove_songs, highlightbackground="#191414")
+        enterButton = Button(removePlaylistWindow, text="Enter", command=remove_songs, highlightbackground="#191414")
         enterButton.pack()
 
     except:
@@ -278,9 +283,64 @@ def remove_songs():
     playlistEntry.destroy()
     global list 
     list = []
-    playlist = sp.playlist(playlist_id[request])
-    print(playlist[name])
+    removePlaylistID = playlist_id[request]
+    playlistPrompt.config(text=request)
+    global newPlaylist
+    newPlaylist = sp.playlist(removePlaylistID)
+    global song_id
+    song_id = {}
 
+    global newList
+    newList = []
+
+    for x in newPlaylist["tracks"]["items"]:
+        track = x["track"]["name"]
+        id = x["track"]["id"]
+        song_id[track] = id
+        list.append(track)
+
+    class recentSongClass:
+        def __init__(self, songName):
+            self.name = songName
+            self.control = False
+
+        def toggle(self):
+            if(self.control == False):
+                self.control = True
+            else:
+                self.control = False
+
+    global newSongList
+    newSongList = []
+
+    for j in range(len(list)):
+        newList.append(recentSongClass(list[j]))
+        checklist_maker_remove(newList[j])
+
+    enterButton.config(command=remove_items)
+    enterButton.pack()
+
+
+def remove_items():
+    tempList = []
+    for i in range(len(list)):
+        if newList[i].control:
+            tempList.append(newList[i].name)
+    IDList = []
+    for i in range(len(tempList)):
+        idOfSong = song_id[tempList[i]]
+        IDList.append(idOfSong)
+
+    sp.playlist_remove_all_occurrences_of_items(playlist_id[request], IDList)
+
+    removeSongSuccess = Tk()
+    removeSongSuccess.config(bg="#191414")
+    removeSongSuccess.title('Spotify App')
+    removeSongSuccess.geometry('400x150')
+
+    successLabel = Label(removeSongSuccess, text="Songs Successfully Removed", fg="#1DB954", bg="#191414",
+                         font="ProximaNova 20")
+    successLabel.pack()
 
 def add_image_to_playlist():
     print("What playlist?")
