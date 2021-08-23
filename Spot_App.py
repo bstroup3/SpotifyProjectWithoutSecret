@@ -2,7 +2,7 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy.util as util
-
+import webbrowser
 from tkinter import *
 
 SPOTIPY_CLIENT_ID = "821a2836760b4990b1bec51520a7bc43"
@@ -14,7 +14,7 @@ user = "bds425"
 client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-scope = "user-read-recently-played playlist-modify-public user-follow-read user-read-email user-read-private"
+scope = "user-read-recently-played playlist-modify-public user-follow-read user-read-email user-read-private ugc-image-upload"
 token = util.prompt_for_user_token(user, scope, client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET, redirect_uri=REDIRECT_URI)
 
 if token:
@@ -308,14 +308,65 @@ def remove_items():
     successLabel.pack()
 
 def add_image_to_playlist():
-    print("What playlist?")
-    request = input()
-    print("Go to this website to convert and copy Base64 data: https://onlinejpgtools.com/convert-jpg-to-base64")
-    print("Paste data image")
-    requestImage = input()
-    addInto = playlist_id[request]
+    addImageWindow = Tk()
+    addImageWindow.config(bg="#191414")
+    addImageWindow.title('Add Image to Playlist')
+    addImageWindow.geometry('400x300')
+    imagePlaylist = Label(addImageWindow, text="What playlist would you like to add an image to?", fg="#1DB954", bg="#191414",
+                          font="ProximaNova 16")
+    imagePlaylist.pack()
+    global imagePlaylistEntry
+    imagePlaylistEntry = Entry(addImageWindow, bg="#191414", fg="#1DB954")
+    imagePlaylistEntry.pack()
+
+    imagePlaylistButton = Button(addImageWindow, text="Enter", command=image_Prompt, highlightbackground="#191414")
+    imagePlaylistButton.pack()
+
+    #print("Go to this website to convert and copy Base64 data: https://onlinejpgtools.com/convert-jpg-to-base64")
+    #print("Paste data image")
+    #requestImage = input()
+    #addInto = playlist_id[request]
+    #sp.playlist_upload_cover_image(playlist_id=addInto, image_b64=requestImage)
+    #print("Image added")
+def callback(url):
+    webbrowser.open_new(url)
+
+def image_Prompt():
+    imageWindow = Tk()
+    imageWindow.config(bg="#191414")
+    imageWindow.title('Add Image')
+    imageWindow.geometry("400x300")
+
+    imagePlaylist = imagePlaylistEntry.get()
+    playlistPrompt = Label(imageWindow, text="What image would you like to add to " + imagePlaylist, fg="#1DB954", bg="#191414")
+    playlistPrompt.pack()
+
+    directionPrompt = Label(imageWindow, text="Go to this website to convert and copy Base64 data: ", fg="#1DB954", bg="#191414")
+    directionPrompt.pack()
+
+    websitePrompt = Label(imageWindow, text=r"https://onlinejpgtools.com/convert-jpg-to-base64", fg="#1F51FF", bg="#191414",cursor="hand2")
+    websitePrompt.pack()
+
+    websitePrompt.bind("<Button-1>", lambda e: callback("https://onlinejpgtools.com/convert-jpg-to-base64"))
+
+    global baseEntry
+    baseEntry = Entry(imageWindow, bg="#191414", fg="#1DB954")
+    baseEntry.pack()
+
+    baseButton = Button(imageWindow, text="Enter", command=add_image_function, highlightbackground="#191414")
+    baseButton.pack()
+
+def add_image_function():
+    requestImage = baseEntry.get()
+    addInto = playlist_id[imagePlaylistEntry.get()]
     sp.playlist_upload_cover_image(playlist_id=addInto, image_b64=requestImage)
-    print("Image added")
+    successWindow = Tk()
+    successWindow.config(bg="#191414")
+    successWindow.title("Success")
+    successWindow.geometry("400x150")
+    successLabel = Label(successWindow, text="Image Added Successfully", bg="#191414", fg="#1DB954", font="ProximaNova 20")
+    successLabel.pack()
+
 
 def returntoHome():
     window.destroy()
