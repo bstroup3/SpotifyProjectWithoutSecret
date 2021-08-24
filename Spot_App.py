@@ -8,6 +8,8 @@ from tkinter import *
 SPOTIPY_CLIENT_ID = "821a2836760b4990b1bec51520a7bc43"
 SPOTIPY_CLIENT_SECRET = "bcef5b3d0b9646a685b9b82c03399756"
 REDIRECT_URI = "http://localhost:8888/callback"
+global user
+
 user = "bds425"
 
 
@@ -143,7 +145,7 @@ def recent_checklist():
             else:
                 self.control = False
 
-        
+
 
 
     global recentSongList
@@ -243,10 +245,10 @@ def remove_songs_from_playlist():
 
 def remove_songs():
     playlistPrompt.config(text="Which songs would you like to remove")
-    global request 
+    global request
     request = playlistEntry.get()
     playlistEntry.destroy()
-    global list 
+    global list
     list = []
     removePlaylistID = playlist_id[request]
     playlistPrompt.config(text=request)
@@ -414,6 +416,7 @@ while 1:
         removeSongPlaylist.grid(row=7, column=1)
         addImagePlaylist = Button(window, text="Add Image to a Playlist", command=add_image_to_playlist, activeforeground="#1DB954", highlightbackground="#191414")
         addImagePlaylist.grid(row=8, column=1)
+
     global viewOwnedPlaylist
 
     def viewOwnedPlaylist():
