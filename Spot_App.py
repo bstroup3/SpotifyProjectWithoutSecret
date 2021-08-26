@@ -5,12 +5,13 @@ import spotipy.util as util
 import webbrowser
 from tkinter import *
 
+
 SPOTIPY_CLIENT_ID = "821a2836760b4990b1bec51520a7bc43"
 SPOTIPY_CLIENT_SECRET = "bcef5b3d0b9646a685b9b82c03399756"
 REDIRECT_URI = "http://localhost:8888/callback"
-global user
 
-user = "bds425"
+global user
+user = "mannypaz_"
 
 
 client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
