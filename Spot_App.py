@@ -11,7 +11,7 @@ SPOTIPY_CLIENT_SECRET = "bcef5b3d0b9646a685b9b82c03399756"
 REDIRECT_URI = "http://localhost:8888/callback"
 
 global user
-user = "mannypaz_"
+user = "bds425"
 
 
 client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIPY_CLIENT_ID, client_secret=SPOTIPY_CLIENT_SECRET)
@@ -27,6 +27,7 @@ else:
     print("Can't get token for" + user)
 
 playlist_id = {}
+global temp
 temp = sp.user_playlists(user)
 for x in temp['items']:
     name = x['name']
@@ -396,6 +397,8 @@ while 1:
 
     userLabel = Label(window, fg="#1DB954", bg="#191414", text="Enter your Username")
     userText = Entry(window, bg="#191414", fg="#1DB954")
+    #user = userText.get()
+    #sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
     userLabel.grid(row=2, column=1)
     userText.grid(row=3, column=1)
 
@@ -403,7 +406,13 @@ while 1:
     def update_to_main():
         userLabel.destroy()
         userText.destroy()
-        userName = Label(window, text="Welcome "+sp.current_user()["display_name"], foreground="#1DB954", background="#191414")
+        global display_name
+        display_name = ""
+        for z in temp['items']:
+            item = z['owner']['display_name']
+            display_name = item
+
+        userName = Label(window, text="Welcome " + display_name, foreground="#1DB954", background="#191414")
         userName.grid(row=0, column=1)
         greeting.config(text="What would you like to do?")
         startButton.config(text="View Followed Artists", command=view_followed_artists, activeforeground="#1DB954")
