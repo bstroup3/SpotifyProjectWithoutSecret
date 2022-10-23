@@ -6,8 +6,8 @@ import webbrowser
 from tkinter import *
 
 
-SPOTIPY_CLIENT_ID = "821a2836760b4990b1bec51520a7bc43"
-SPOTIPY_CLIENT_SECRET = "bcef5b3d0b9646a685b9b82c03399756"
+SPOTIPY_CLIENT_ID = ""
+SPOTIPY_CLIENT_SECRET = ""
 REDIRECT_URI = "http://localhost:8888/callback"
 
 global user
